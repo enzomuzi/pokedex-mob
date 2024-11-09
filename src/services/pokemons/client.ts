@@ -1,5 +1,11 @@
+// PokemonClient.ts
 import api from "../api";
-import { PokemonApiResult } from "./types";
+import {
+  PokemonApiResult,
+  Result,
+  PokemonDetail,
+  PokemonDescription,
+} from "./types";
 
 class PokemonClient {
   getPaginationPokemon = async (
@@ -16,7 +22,29 @@ class PokemonClient {
     });
   };
 
-  getPokemon = async (id: string): Promise<PokemonApiResult> => {
+  getPokemon = async (id: string): Promise<PokemonDetail> => {
+    return new Promise((resolve, reject) => {
+      api
+        .get(`/pokemon/${id}`)
+        .then((res) => resolve(res.data as PokemonDetail))
+        .catch((res) => {
+          reject(res);
+        });
+    });
+  };
+
+  getPokemonDescription = async (name: string): Promise<PokemonDescription> => {
+    return new Promise((resolve, reject) => {
+      api
+        .get(`/pokemon-species/${name}`)
+        .then((res) => resolve(res.data as PokemonDescription))
+        .catch((res) => {
+          reject(res);
+        });
+    });
+  };
+
+  getIdPokemon = async (id: string): Promise<Result> => {
     return new Promise((resolve, reject) => {
       api
         .get(`/pokemon/${id}`)
