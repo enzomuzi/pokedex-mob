@@ -5,6 +5,7 @@ import {
 import { Home } from "../pages/Home";
 import { Poke } from "../pages/Poke";
 import Detail from "../pages/Detail/Detail";
+import { RouteProp } from "@react-navigation/native";
 
 type AppRoutes = {
   home: undefined;
@@ -17,7 +18,13 @@ export type AppNavigationProps = NativeStackNavigationProp<AppRoutes>;
 export type RootStackParamList = {
   home: undefined;
   poker_cards: { name: string; id: string; image: string };
-  detail: { name: string; image: string; type: string; id: string; results };
+  detail: {
+    name: string;
+    image: string;
+    type: string;
+    id: string;
+    results: any;
+  };
 };
 
 export function AppRoutes() {
@@ -32,7 +39,23 @@ export function AppRoutes() {
     >
       <Screen name="home" component={Home} />
       <Screen name="poker_cards" component={Poke} />
-      <Screen name="detail" component={Detail} />
+      <Screen
+        name="detail"
+        component={Detail}
+        options={({
+          route,
+        }: {
+          route: RouteProp<RootStackParamList, "detail">;
+        }) => {
+          const title = route.params?.name || "Detalhes";
+          return {
+            headerShown: true,
+            headerBackTitle: "Voltar",
+            headerBackTitleStyle: { fontSize: 30 },
+            headerTitle: title,
+          };
+        }}
+      />
     </Navigator>
   );
 }
