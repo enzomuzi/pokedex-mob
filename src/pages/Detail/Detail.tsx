@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   image: {
-    width: 350,
+    width: 250,
     height: 350,
     marginBottom: 16,
   },

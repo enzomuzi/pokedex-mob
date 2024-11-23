@@ -8,6 +8,8 @@ import {
   Button,
   ImageBackground,
   Image,
+  SafeAreaView,
+  FlatList,
 } from "react-native";
 import { useEffect, useState } from "react";
 import { PokemonClient } from "../../services/pokemons/client";
@@ -25,7 +27,7 @@ export function Poke() {
   const fetchPokemons = async () => {
     setIsLoading(true);
     const client = new PokemonClient();
-    const response = await client.getPaginationPokemon(0, 1300);
+    const response = await client.getPaginationPokemon(0, 1015);
     setPokemons(response.results);
 
     const types = await Promise.all(
@@ -58,17 +60,16 @@ export function Poke() {
 
   return (
     <View style={styles.viewBckgrd}>
-      <SearchInput pokemonFilter={pokemonFilter} />
-      <Text
+      {/* <Text
         style={{
           fontWeight: "bold",
-          fontSize: 30,
-          margin: 5,
+          fontSize: 25,
           padding: 5,
         }}
       >
         Pokedéx
-      </Text>
+      </Text> */}
+
       <ImageBackground
         source={require("../../assets/images/bg-poke.jpg")}
         resizeMode="cover"
@@ -82,31 +83,54 @@ export function Poke() {
             />
           </View>
         ) : (
-          <ScrollView>
-            {pokemons.map((pokemon) => {
-              const id = pokemon.url.split("/").slice(-2, -1)[0];
-              const imgUrl = new PokemonClient().getImagePokemon(id);
-              const type = pokemonTypes[id];
-
-              const capitalizeFirstLetter = (name) => {
-                return name.charAt(0).toUpperCase() + name.slice(1);
-              };
-              const formattedName = capitalizeFirstLetter(pokemon.name);
-
-              return (
-                <View style={styles.container} key={id}>
-                  {type && (
-                    <PokeCard
-                      id={id}
-                      name={formattedName}
-                      image={imgUrl}
-                      type={type}
-                    />
-                  )}
+          <SafeAreaView>
+            <SearchInput pokemonFilter={pokemonFilter} />
+            <FlatList
+              data={pokemons}
+              keyExtractor={(item) => item.url}
+              initialNumToRender={5}
+              initialScrollIndex={0}
+              renderItem={({ item }) => (
+                <View style={styles.container}>
+                  <PokeCard
+                    id={item.url.split("/").slice(-2, -1)[0]}
+                    name={
+                      item.name.charAt(0).toUpperCase() + item.name.slice(1)
+                    }
+                    image={new PokemonClient().getImagePokemon(
+                      item.url.split("/").slice(-2, -1)[0]
+                    )}
+                    type={pokemonTypes[item.url.split("/").slice(-2, -1)[0]]}
+                  />
                 </View>
-              );
-            })}
-          </ScrollView>
+              )}
+            />
+          </SafeAreaView>
+          // <ScrollView>
+          //   {pokemons.map((pokemon) => {
+          //     const id = pokemon.url.split("/").slice(-2, -1)[0];
+          //     const imgUrl = new PokemonClient().getImagePokemon(id);
+          //     const type = pokemonTypes[id];
+
+          //     const capitalizeFirstLetter = (name) => {
+          //       return name.charAt(0).toUpperCase() + name.slice(1);
+          //     };
+          //     const formattedName = capitalizeFirstLetter(pokemon.name);
+
+          //     return (
+          //       <View style={styles.container} key={id}>
+          //         {type && (
+          //           <PokeCard
+          //             id={id}
+          //             name={formattedName}
+          //             image={imgUrl}
+          //             type={type}
+          //           />
+          //         )}
+          //       </View>
+          //     );
+          //   })}
+          // </ScrollView>
         )}
       </ImageBackground>
     </View>
