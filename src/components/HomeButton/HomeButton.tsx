@@ -23,7 +23,7 @@ export default class HomeButton extends Component<HomeButtonProps> {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#ec5353",
+    backgroundColor: "#C22E28",
     borderRadius: 20,
     paddingVertical: 10,
     paddingHorizontal: 20,
