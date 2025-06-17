@@ -27,7 +27,7 @@ export function Poke() {
   const fetchPokemons = async () => {
     setIsLoading(true);
     const client = new PokemonClient();
-    const response = await client.getPaginationPokemon(0, 1015);
+    const response = await client.getPaginationPokemon(0, 500);
     setPokemons(response.results);
 
     const types = await Promise.all(
