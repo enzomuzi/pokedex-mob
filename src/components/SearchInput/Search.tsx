@@ -7,7 +7,7 @@ export default function SearchInput({ pokemonFilter }) {
     <TextInput
       style={style.txtBckgrd}
       placeholder="Search..."
-      onChangeText={(text) => pokemonFilter(text)}
+      onChangeText={(text) => pokemonFilter(text.toLowerCase())}
     />
   );
 }
