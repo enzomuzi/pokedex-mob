@@ -10,7 +10,7 @@ import {
 class PokemonClient {
   getPaginationPokemon = async (
     offset = 0,
-    limit = 1300
+    limit = 1015
   ): Promise<PokemonApiResult> => {
     return new Promise((resolve, reject) => {
       api
